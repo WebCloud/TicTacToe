@@ -22,11 +22,13 @@ define ['store', 'jquery'], (store, $) ->
 				$(@).attr 'class', ''
 				$(@).text ''
 			)
+		return
 
 	Game.prototype.clearScore = ()->
 		store.set 'P1', 0
 		store.set 'P2', 0
 		$('.well span').text("P1(#{store.get('P1')}) x P2(#{store.get('P2')})")
+		return
 
 	Game.prototype.drawWinner = ()->
 		$('.game tr').each((i)->
@@ -67,31 +69,25 @@ define ['store', 'jquery'], (store, $) ->
 					$('.well span').text("P1(#{store.get('P1')}) x P2(#{store.get('P2')})")
 					$(@).trigger 'clearGame'
 		)
+
 		if d1 is 'marked X animated bounce,marked X animated bounce,marked X animated bounce,' or d1 is 'marked O animated bounce,marked O animated bounce,marked O animated bounce,'
 			winner = if $(@).text() is 'X' then 'P1' else 'P2'
 			store.set(winner, store.get(winner)+1)
-			alert = "<div class='alert alert-info alert-dismissable'>
-		      <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-		      The winner is #{winner}
-		    </div>"
-			$('.well').after alert
+			$('.well').after "<div class='alert alert-info alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>The winner is #{winner}</div>"
 			$('.well span').text("P1(#{store.get('P1')}) x P2(#{store.get('P2')})")
 			$(@).trigger 'clearGame'
 
 		if d2 is 'marked X animated bounce,marked X animated bounce,marked X animated bounce,' or d2 is 'marked O animated bounce,marked O animated bounce,marked O animated bounce,'
 			winner = if $(@).text() is 'X' then 'P1' else 'P2'
 			store.set(winner, store.get(winner)+1)
-			alert = "<div class='alert alert-info alert-dismissable'>
-		      <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-		      The winner is #{winner}
-		    </div>"
-			$('.well').after alert
+			$('.well').after "<div class='alert alert-info alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>The winner is #{winner}</div>"
 			$('.well span').text("P1(#{store.get('P1')}) x P2(#{store.get('P2')})")
 			$(@).trigger 'clearGame'
 
 		if $('td.marked').length is 9
 			alert 'The game is tied!'
 			$(@).trigger 'clearGame'
+		return
 
 
 	Game.prototype.mark = ()->
@@ -102,6 +98,6 @@ define ['store', 'jquery'], (store, $) ->
 	    	turn = if turn == 'X' then 'O' else 'X'
 	    	window.turn = turn
 	    	$(@).trigger 'marked'
-	    	return
+	    return
 
 	Game
