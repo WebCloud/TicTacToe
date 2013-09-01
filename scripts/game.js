@@ -23,7 +23,7 @@
     Game.prototype.clearGame = function() {
       if (confirm('Would you like to restart the game?')) {
         window.turn = 'X';
-        return $('td').each(function() {
+        $('td').each(function() {
           $(this).attr('class', '');
           return $(this).text('');
         });
@@ -32,10 +32,10 @@
     Game.prototype.clearScore = function() {
       store.set('P1', 0);
       store.set('P2', 0);
-      return $('.well span').text("P1(" + (store.get('P1')) + ") x P2(" + (store.get('P2')) + ")");
+      $('.well span').text("P1(" + (store.get('P1')) + ") x P2(" + (store.get('P2')) + ")");
     };
     Game.prototype.drawWinner = function() {
-      var alert, d1, d2, winner;
+      var d1, d2, winner;
       $('.game tr').each(function(i) {
         var column;
         column = '';
@@ -76,22 +76,20 @@
       if (d1 === 'marked X animated bounce,marked X animated bounce,marked X animated bounce,' || d1 === 'marked O animated bounce,marked O animated bounce,marked O animated bounce,') {
         winner = $(this).text() === 'X' ? 'P1' : 'P2';
         store.set(winner, store.get(winner) + 1);
-        alert = "<div class='alert alert-info alert-dismissable'>		      <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>		      The winner is " + winner + "		    </div>";
-        $('.well').after(alert);
+        $('.well').after("<div class='alert alert-info alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>The winner is " + winner + "</div>");
         $('.well span').text("P1(" + (store.get('P1')) + ") x P2(" + (store.get('P2')) + ")");
         $(this).trigger('clearGame');
       }
       if (d2 === 'marked X animated bounce,marked X animated bounce,marked X animated bounce,' || d2 === 'marked O animated bounce,marked O animated bounce,marked O animated bounce,') {
         winner = $(this).text() === 'X' ? 'P1' : 'P2';
         store.set(winner, store.get(winner) + 1);
-        alert = "<div class='alert alert-info alert-dismissable'>		      <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>		      The winner is " + winner + "		    </div>";
-        $('.well').after(alert);
+        $('.well').after("<div class='alert alert-info alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>The winner is " + winner + "</div>");
         $('.well span').text("P1(" + (store.get('P1')) + ") x P2(" + (store.get('P2')) + ")");
         $(this).trigger('clearGame');
       }
       if ($('td.marked').length === 9) {
         alert('The game is tied!');
-        return $(this).trigger('clearGame');
+        $(this).trigger('clearGame');
       }
     };
     Game.prototype.mark = function() {
