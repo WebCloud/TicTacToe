@@ -35,10 +35,11 @@
       return $('.well span').text("P1(" + (store.get('P1')) + ") x P2(" + (store.get('P2')) + ")");
     };
     Game.prototype.drawWinner = function() {
-      $('td').each(function(i) {
-        var alert, column, winner;
+      var alert, d1, d2, winner;
+      $('.game tr').each(function(i) {
+        var column;
         column = '';
-        $("td:nth-child(" + i + "),td:nth-child(" + (i + 3) + "),td:nth-child(" + (i + 6) + ")").each(function() {
+        return $("td:nth-child(" + (i + 1) + ")").each(function() {
           var alert, winner;
           column += "" + ($(this).attr('class')) + ",";
           if (column === 'marked X animated bounce,marked X animated bounce,marked X animated bounce,' || column === 'marked O animated bounce,marked O animated bounce,marked O animated bounce,') {
@@ -50,6 +51,17 @@
             return $(this).trigger('clearGame');
           }
         });
+      });
+      d1 = '';
+      d2 = '';
+      $('td').each(function(i) {
+        var alert, winner;
+        if (i + 1 === 1 || i + 1 === 5 || i + 1 === 9) {
+          d1 += "" + ($(this).attr('class')) + ",";
+        }
+        if (i + 1 === 3 || i + 1 === 5 || i + 1 === 7) {
+          d2 += "" + ($(this).attr('class')) + ",";
+        }
         if ($(this).prev().hasClass('marked') && $(this).next().hasClass('marked') && $(this).hasClass('marked')) {
           if (($(this).prev().attr('class') === $(this).next().attr('class')) && ($(this).prev().attr('class') === $(this).attr('class'))) {
             winner = $(this).text() === 'X' ? 'P1' : 'P2';
@@ -61,6 +73,22 @@
           }
         }
       });
+      if (d1 === 'marked X animated bounce,marked X animated bounce,marked X animated bounce,' || d1 === 'marked O animated bounce,marked O animated bounce,marked O animated bounce,') {
+        winner = $(this).text() === 'X' ? 'P1' : 'P2';
+        store.set(winner, store.get(winner) + 1);
+        alert = "<div class='alert alert-info alert-dismissable'>		      <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>		      The winner is " + winner + "		    </div>";
+        $('.well').after(alert);
+        $('.well span').text("P1(" + (store.get('P1')) + ") x P2(" + (store.get('P2')) + ")");
+        $(this).trigger('clearGame');
+      }
+      if (d2 === 'marked X animated bounce,marked X animated bounce,marked X animated bounce,' || d2 === 'marked O animated bounce,marked O animated bounce,marked O animated bounce,') {
+        winner = $(this).text() === 'X' ? 'P1' : 'P2';
+        store.set(winner, store.get(winner) + 1);
+        alert = "<div class='alert alert-info alert-dismissable'>		      <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>		      The winner is " + winner + "		    </div>";
+        $('.well').after(alert);
+        $('.well span').text("P1(" + (store.get('P1')) + ") x P2(" + (store.get('P2')) + ")");
+        $(this).trigger('clearGame');
+      }
       if ($('td.marked').length === 9) {
         alert('The game is tied!');
         return $(this).trigger('clearGame');
